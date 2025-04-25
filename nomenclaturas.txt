@@ -1,0 +1,36 @@
+﻿Identificadores atributos (classe, interface, struct, record, delegate ou enum), 
+membro, propriedade, variavel ou namespace.
+
+* começar com letra ou sublinhado _
+* não pode iniciar com numero ou caracteres especiais
+* não podem conter espaços
+* pode usar caracteres unicode (não recomendado)
+* não usar palavras reservadas
+* não pode exceder 512 caracteres
+
+Camel Case
+
+primeira letra iniciada com minuscula, letra de cada palavra seguinte maiscula.
+
+EX: valorDoDesconto, nomeCompleto, valorDoImpostoSobreServico.
+
+usado em nome variaveis, parametros e campos internos privados
+
+PascalCase	
+
+a primeira letra é iniciada com maiscula.
+
+Ex: CalculaImpostoDeRenda, ValorDoDesconto, NomeCompleto.
+
+usado em nome de classes,métodos, interfaces e propriedades.
+
+
+========================
+
+Constantes - usar letras maisculas
+EX:  DESCONTO, VALOR , IMPOSTO
+
+Sublinhado (_) usar para campos internos privados e somente leitura (Camel case)
+
+ex: _valorTotal, _calculoImposto, _precoComDesconto
+

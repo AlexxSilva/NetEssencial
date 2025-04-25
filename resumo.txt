@@ -1,0 +1,512 @@
+﻿
+Tipos de dados (Valor x Referência) - C# Linguagem fortemente tipada
+
+Valor:
+
+Variaveis do tipo valor não podem conter o valor null 
+Os dados são armazenados na stack (Numericos: int, float, decimal)
+								  ( Não numericos: bool, char, enum, datetime (struct))
+
+Referência: 
+
+Os dados fica armazenado na heap e cada variavel contem uma referencia ao local
+onde os dados estão armazenados - Ponteiro para onde o dado está armazenado (string, object, class, dynamic).
+
+
+Definindo variaveis ou constantes : Definir tipo, nome e atribuição de valores. (const - constantes)
+
+Constantes: não podem ser alterados
+variaveis : podem ser alteradas
+(o tipo define o tamanho que a variavel usa de memoria.)
+
+tipos valores:
+//byte - 1 byte
+short -  2 bytes
+int -    4 bytes
+float -  4 bytes
+lont -   8 bytes
+double - 8 bytes
+decimal - 16 bytes (usado para valores financeiros)
+
+Tipos strings são imutaveis, ou seja não podem ser alteradas. 
+Quando concatenar ou passar valor ele cria um novo espaço de memoria.
+(usar stringBuilder)
+
+Tipo object é genérico, ele aceita qualquer tipo de dado pois todos os tipos herdam de object.
+dynamic (semelhante ao object, mas é util para usar recursos como reflaction ou linguagem dinamica). 
+(Todos os objetos herdeam de object)
+
+Nullable types
+
+Tornar um tipo de valor um tipo que aceita valor null.
+int valor = null; (erro não é permitido) - tipo não anulavel
+Nullable<int> valor = null; (aceita) - é um nullable type
+int? valor = null;
+
+nomenclaturas
+
+PascalCase - primeira letra maiscula, e a letra de cada palavra seguinte maiscula.
+usado em classes, métodos, interfaces e propriedades (entityframework, usa essa estrutura
+pra criar os campos de tabelas).
+
+CamelCase - primeira letra minuscula, e a letra de cada palavra seguinte maiscula.
+(usado em variaveis, parametros e campos internos privados).
+
+snake_case - primeira letra minuscula,  a letra de cada palavra seguinte minuscula,
+com _ antes. (banco de dados).
+
+(formas de juntar textos - concatenação, interpolação ($), placeholders usando chaves para dizer a ordem
+que vou colocar os valores e depois virgula as variaveis.)
+
+Sequencia de Escapes (\b - backspace, \n - nova linha, \\ barra invertida \? interrogação).
+
+A linguagem c# é estaticamente tipada em tempo de compilação, ou seja depois que uma variavel é 
+declarada, seu tipo não pode mais ser alterado ou usado para armazenar outro tipo de dado,
+mas pode ser convertido para outro tipo desde que seja convertivel para outro tipo de dado. 
+
+conversão implicita - o compilador faz automaticamente se ele entender q é conversivel
+conversão explicita - feita de forma manual
+
+conversão de strings (ToString())
+Como todos os objetos herdam de object, todos os objetos herdam o método ToString
+
+conversões também podem ser feitas com o uso da classe convert.
+
+conversão de ampliação ou estreitamento entre dois tipos de dados tem exito se não houver perda de dados,
+caso perca de dados o erro é OverflowException
+
+Operadores aritméticos
++ - / * (% resto da divisão) 
+
+Uso da classe Math para calculos matematicos.
+
+inferencia de tipos (Tipo padrão é o tipo explicito)
+Declaração do tipo implicito com var (deve ser definido o valor para que o compilador possa inferir o tipo de dados)
+Não é possivel atribuir null.
+multiplas variaveis do tipo implicito não podem ser inicializadas na mesma instrução.
+não podemos alterar o tipo da variavel depois de inicializada.
+
+quando usar var
+tipos anonimos, laços for e foreach, instruções using
+
+operadores de atribuição
+=
++=
+-=
+*=
+/=
+%=
+
+operador + e += com strings (concaterna) - null representa uma string vazia
+
+constantes 
+valores imutaveis que são conhecidos em tempo de execucao e não mudam durante a vida util do programa.
+
+
+Incremento e decremento ++ e --
+
+pos incremento  x++ (primeiro resolve a expressão depois incrementa - o valor da expressão fica sem o valor do incremento)
+pre incremento ++x (incrementa e depois resolve a expressão)
+
+
+operadores relacionais
+
+==
+>
+<
+>=
+<=
+!=
+
+operadores logicos
+&& - and
+|| - or
+! - not (negação)
+
+ordem de precedência e associatividade
+* , /, %, + , - [], ()
+
+!, &&, ||
+
+++, --, *, -
+
+nullable referente types
+Tipos de referencia que não tem referencia nenhuma (null)
+
+lembrando que tipos valor são armazenados na stack, e tipos referencia é armazenado
+na stack uma referencia para onde os dados estão armazenados e armazena na heap.
+
+Quando o tipo referencia e nulo,eu não tenho essa referencia para o dado na heap,
+pois não tem nada armazenado la.
+
+string nome = null; (converting null literal or possible null value to non-nullable type)
+nome.toUpper() - System.NullReferenceException 'Object reference not set to an instance of an object'
+
+Nullable reference types  - nos alerta sobre a possibilidade de ocorrer um erro
+envolvendo manipulação nula. Tem a finalidade de minimizar a chance de aplicativo lancar
+um System.NullReferenceException
+
+definir no arquivo de projeto : <Nullable>enable</Nullable>
+
+(null condicional operation .? ou Nullable<T>)
+
+string? nome = null;
+nome?.ToUpper();
+
+
+=============================================
+
+Estruturas de controle
+IF / IF ELSE / IF ELSE IF / SWITCH / ESTRUTURA DE REPETIÇÃO / WHILE / FOR / DO WHILE / BREAK E CONTINUE
+
+=============================================
+
+Classes e métodos
+
+Classe : Tipo de referência, estruturado que contém os membros:  (atributos - propridades e campos ) (metodos - comportamentos)
+
+Uma classe é uma abastração de um objeto do mundo real.
+
+ex: Pessoa - atributos - nome, idade, sexo - metodos - Comer, andar, caminhar
+
+Atravês da instancia da classe podemos criar objetos do tipo pessoa. (new)
+
+obs sobre uso de memoria
+
+Quando criando um objeto, a variavel é armazenada na stack, e o objeto é armazenado
+na heap, onde a stack guarda a referencia para onde o dado está armazenado na heap.
+
+caso eu crie outro objeto e ele recebe o primeiro objeto, os dois apontam para a mesma referencia 
+na heap, ou seja se alterar as informações de 1 o outro também altera.
+
+Objeto - Instancia de uma classe, criada pelo operador (new)
+
+Objetos possuem caracteristicas proprias de algo do mundo real,
+enquanto a classe descreve todos os objetos de um tipo particular.
+
+métodos
+
+Representa o comportamento das classes, e executam ações e realiza a comunicação entre objetos
+contem	 um bloco de codigo com instruções que serão executadas quando forem chamadas.
+
+Metodo main é o ponto de entrada para todas as aplicações  e é chamado pelo CLR (Common language runtime)
+quando o programa é iniciado.
+
+Funções são declaradas fora de uma classe, no caso em c# não existe pois os blocos de codigo
+sempre são declarados dentro de classes, e nesse caso são metodos.
+
+tipo de retorno + Nome (pascal case) + Lista de parametros +  Corpo do método
+
+Ao tentar chamar os métodos da classe, vc perceberá mais métodos que você não criou, porque todas
+as classes herdam de object, e na classe object que elas foram criadas.
+
+Quando o método tem apenas uma instrução, eu posso usar um formato de expressão compacto
+
+ex: 
+
+ public void ExibirDataAtual()
+{
+   MessageBox.Show(DateTime.Now.ToShortDateString());
+}
+
+alterar para 
+   public void ExibirDataAtual() =>
+            MessageBox.Show(DateTime.Now.ToShortDateString());
+
+passagem de parametros
+
+ public void Saudacao(string nome , string data) 
+
+contrutores
+
+São tipos especiais de metodos usados para criar e inicializar objetos de uma classe. Sempre
+que uma classe é instanciada, o contrutor é chamado.
+
+Ao criar  uma classe, um construtor padrão sem parametros é criado automaticamente,
+e ele é usado para criar uma instancia da classe e definir valores padrão para os membros da classe.
+Ao instanciar a classe o contrutor padrão atribui os valores padrão aos membros da classe.
+
+
+contrutores tem o mesmo nome da classe e não possuem retorno (podem possuir parametros para 
+inicializar os membros da classe.)
+
+eu posso ter mais de um contrutor e também posso chamar um contrutor em outro para passar os valores 
+já preenchidos.
+
+ex:
+// esse contrutor chama o contrutor com dois parametros
+public Aluno(string nome, int idade, string sexo, string aprovado) : this(nome, idade)
+        {
+            Sexo = sexo;
+            Aprovado = aprovado;
+        }
+
+        public Aluno(string nome, int idade)
+        {
+            Nome = nome;
+            Idade = idade;
+
+        }
+
+Palavra chave This -Referece a instancia atual da classe.
+passar parametro da instancia atual para outros métodos.
+invocar outro contrutor da mesma classe.
+também é usada  como um modificador do primeiro parametro de um modo de extensãõ ???
+
+Métodos com retorno (return)
+
+Assinatura do método leva o nome do parametro, numero de parametros, tipo de parametro, ordem dos parametros
+
+não é possivel ter dois métodos iguais, mas com o mesmo nome sim desde que uma das opcoes acima seja
+diferente.
+
+Passando argumento por valor e por referencia
+
+Valor: Uma copia do valor do argumento é feita e passada para o parametro do método chamado
+Referencia: Passa a referencia ao mesmo local da memória dos argumentos, nenhuma copia
+é passada, dado ao método a capacidade de acessar e modificar a variavel original do chamador.
+
+Usa as palavras ref ou out.
+
+diferença out x ref
+out transfere os dados para fora do método e nao para dentro dele
+variaveis no argumento out não precisam ser inicializadas antes de serem passadas em
+uma chamada de metodo, no entanto o método chamado deve atribuir um valor ao parametro
+definido com a palavra-chave out antes que  método seja retornado.
+
+parametro: o valor que  método espera receber quando for chamado
+argumento: representa o valor que você passa para o parametro
+
+argumentos nomeados, eu passo o argumento pelo nome dos parametros e não pela ordem que foram
+colocados.
+
+parametros opcionais
+permite definir parametros que o chamador pode omitir. (precisa ter um valor padrão na sua definição,
+pois se nenhum argumento for enviado para esse parametro, o valor poderá ser usado.)
+
+metodos estaticos (static)
+(classes, interfaces, structs, campos, métodos, propridades, operadores, eventos, contrutores).
+
+Esses métodos não dependem da criação e instancia do objeto para serem acessados. 
+Classe.metodostatico(parametros)
+métodos estaticos não possuem ligação com um objeto, eles não podem usar variaveis de instancia,
+que são variaveis de objeto.
+
+campos staticos (campos e propriedades) - pertencem a classe e podem ser acessados sem o new
+
+armazenamento Stack x heap
+
+Quando um objeto é instanciado, a referencia do objeto é guardada na stack, e as informações guardadas
+na heap. No caso de campos estaticos, eles são guardados direto na heap, e cada objeto armazenado na
+heap compartilha a mesma referencia ao campo estatico.
+
+Contrutor statico - inicializar qualquer membros estaticos  ou para executar uma ação especifica que
+precisa ser executada apenas uma vez.
+
+ele é chamado automaticamente antes que a primeira instancia seja criada ou que quaisquer membros
+estaticos seja referenciados.
+
+Um contrutor estatico nao usa modificadores de acesso, nem tem parametros
+Uma classe ou struct só pode ter um unico contrutor statico.
+um contrutor statico não pode ser chamado diretamente
+O usuario não tem controle sob quando o contrutor statico é executado no programa
+inicializa com o valor padrão quando não inicializado
+se gerar uma exceção, o runtime nao invocara uma segunda vez e o membro estatico permacerá
+não inicializado durante o tempo de vida od projeto.
+
+Propriedades // a abordagem se acessar as variaveis publicas seja pela instancia da classe ou 
+pela propria classe diretamente sem restricao viola um dos paradigmas da orientação a objetos
+que é o encapsulamento.
+
+As propriedades foram criadas para resolver esse problema.
+
+Uma propridade é um membro de classe que fornece um mecanismo para ler, gravar e calcular o valor
+ de um campo privado.
+Podem ser usadas como membros publicos, mas possuem metodos especiais chamados de acessadores (get set)
+os acessadores permite que os dados sejam acessados com facilidade e ainda ajuda a promover a segurança
+e a flexibilidade dos métodos.
+A propridade permite que uma classe exponha uma maneira publica de obter e definir valores, enquanto
+oculta o codigo de implamentacao ou verificaçao.
+
+get - retorna o valor do campo privado
+set - permite realizar alguma validacao de dados antes de atribuir um valor ao campo privado.
+//propriedades leitura e gravação,  somente leitura, somente gravação.
+
+leitura e gravacao 
+public string? Nome { get; set; }
+
+somente leitura
+public string? Nome {get;}
+
+somente gravação
+
+private nome;
+public string? Nome
+{
+    set { nome = value; }
+}
+
+
+Structs
+É um estrutura semelhante a classe, composta por tipos de dados e funcionalidades (metodos,
+constantes, contrutores, propriedades, indexadores, operadores e outros tipos de estruturas)
+
+Structs são do tipo valor, e não referencia (são armazenados na stack)
+
+struct name
+{
+}
+
+diferença de struct e classe em relação a memoria
+
+structs c1 e c2
+c1.valor = 1;
+c2 = c1; (nesse momento os dados das duas structs estão armazenados na stack, e duplicado o valor)
+
+stack
+c1 ==== valor =1
+c2 ==== valor =1
+
+classes c1 e c2
+c1.valor = 1;
+c2 = c1; (nesse momento a referencia da memoria na stack das duas classes apontam para o mesmo espaço alocado na heap)
+
+stack                            heap
+c1 ==== ref = c1---------------- mesmo espaço
+c2 ==== ref = c2---------------- de memoria (valor = 1)
+
+quando usar struct 
+Instancias do tipo pequena e de curta duração ou se forem comumente incorporadas em outros objetos.
+
+evite definir uma struct a menos que:
+Represente logicamente um unico valor, semelhante a tipos primitivos.
+Tenha uma tamanho de instancia inferior a 16 bytes.
+é imutavel
+Não precisa sofrer conversão para tipos referencia (boxing) - com frequencia
+
+Enum ou enumeration (tipo valor, memória stack)
+
+tipo de de dado especial definido pelo usuario, é um conjunto de constantes nomeadas do tipo numerico
+que torna o programa mais facil de entender.
+
+pode ser feita diretamente dentro de um namespace,  classe ou struct.
+
+por padrão os membros de uma enum são do tipo int; o primeiro tendo o valor 0, e restante icrementado de 1.
+
+o enum pode ser acesso por nome
+
+modificadores de acesso
+
+palavras para especificar o acesso a um membro (campo, propriedade,metodo) ou tipo (class, struct, etc)
+
+public - pode ser acessado por qualquer outro codigo no mesmo assembly, ou outro assembly.
+
+private -   so pode ser acessado por outro codigo na mesma classe ou struct
+
+internal - pode ser acessado por qualquer codigo no mesmo assembly.
+
+protected - pode ser acessado por qualquer codigo no mesmo assembly ou se a classe for herdada
+em outro assembly
+
+file (C#10) - Restringe o escopo e visibilidade de um tipo em nivel superior ao arquivo no que ele foi declarado.
+
+estratégia - limitar a visibilidade de seus tipos e ou membros, restringindo-os a apenas a quem
+precisa realmente acessar o tipo ou membro.
+
+tratamento de erros (try catch)
+trata exceções, erros encontrados em tempo de execução do programa
+se o sistema não tratar a excessão o sistema para a execução do programa com a mensagem do erro.
+finally - outro bloco que será executado ao dar a exceção para liberar os recursos usados ao realizar outra tarefa.
+
+propridades da exceção
+
+Message - mensagem explicando o erro da exceção
+StackTrace - descreve onde ela ocorreu
+InnerException - se a exceção for lançada por outra exceção, contem a referencia da antiga exceção.
+
+Tipos anonimos T (3.0 C#)
+
+Fornecem uma maneira conveniente para encapsular um conjunto de propriedades, somente leitura
+em um unico objeto sem precisar definir explicitamente o tipo.
+
+O nome do tipo é definido pelo compilador e não está disponivel no codigo fonte e o tipo de cada
+propriedade é inferido pelo compilador.
+
+inicializado com new combinado com inicializador de objetos.
+a palavra chave var recupera a referencia do objeto 
+
+são derivados de object
+
+var aluno = new 
+{
+    Nome = "Maria",
+    Idade = 42
+};
+
+tipos anonimos são somente leitura.
+tipos anonimos permitem propriedades anonimas
+
+
+var aluno = new 
+{
+    Nome = "Maria",
+    Idade = 42,
+    Endereco = new {Id= 1, Cidade = "SP"}
+};
+
+//utilidade
+normalmente são usados em uma clausula select de uma expressão de consulta geralmente
+com linq, para retornar um conjunto de propriedades de cada objeto na sequencia da origem.
+
+Partial class
+Permite que uma classe venha a ser implementada em multiplos arquivos fisicos com extensão cs.
+(classes parciais podem usar mais de um arquivo cs e ser a mesma classe)
+podemos criar classes, interfaces, structs e metodos parciais com o modificador partial
+
+Eu posso ter duas classes parciais com o mesmo nome, separadas em arquivos cs diferentes,
+o compilador irá entender que é a mesma classe.
+
+regras
+classes parciais devem estar no mesmo assembly
+mesmo nivel de acessibilidade
+atribuitos são para todas as partes da classe
+
+quando usar
+grandes projetos, permite que varios programadores trabalhem ao mesmo tempo
+codigos gerados automaticaamente, o codigo pode ser adicionado a classe sem precisar recriar o arquivo
+de origem
+ao usar geradores de codigo fonte  para adicionar uma funcionalidade adicional a classe
+
+
+//arrays e coleções
+arrays - numeros fixo de opcoes do mesmo objeto
+coleções - uma maneira flexivel de trabalhar com grupos de objetos
+
+Coleções não genéricas:System.Collections
+
+ArrayList, SortedList, Queue, HashTable
+
+Genéricas: System.Collecions.Generic (indicadas, melhor desempenho)
+
+List, SortedList, Queue, LinkedList, HashSet, SortedSet, Dictinary, SortedDictionary
+
+==================
+
+Arrays (usado para armazenar mais de um valor literal do mesmo tipo em uma variavel do mesmo nome)
+
+Conjunto do mesmo tipo de dados e de tamanho fixo.
+Uma dimensão: Vetor
+
+__ __ __ __ __ __
+
+mais de uma dimensão: Matriz (abaixo de duas dimensões - linhas e colunas)
+
+__ __ __ __ __ __
+__ __ __ __ __ __
+__ __ __ __ __ __
+__ __ __ __ __ __
+
+declaração 
+
+int [] lista = new int[3]{1,2,3};
+
