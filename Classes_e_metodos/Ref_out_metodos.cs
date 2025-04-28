@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace NetEssencial.Classes_e_metodos
 {
-    public partial class Ref_out
+    public static class Ref_out_metodos
     {
-        private void gravarLog()
+        public static void gravarLog()
         {
             MessageBox.Show("log de alterações.....");
         }
-
     }
 }

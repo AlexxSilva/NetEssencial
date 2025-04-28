@@ -510,3 +510,283 @@ declaração
 
 int [] lista = new int[3]{1,2,3};
 
+sintaxe simplificada
+
+ string[] nomes2 = { "Alex", "Jeniffer" };
+
+ cada elemento é um indice, que começa do 0. No caso acima o indice 1 contem o valor "Jeniffer"
+
+ arrays são armazenadas sua referencia na stack, e os dados na heap (também são objetos)
+
+ //percorrer arrays (for, while, do while) usando o contador como indice no array
+ A classe array está no namespace system e fornece algumas propriedades para trabalhar,
+ como length, rank, copy, Clear, Sort, etc).
+com o foreach é possivel percorrer sem usar o indice e definir o tamanho do array.
+
+Classe Array (metodos para trabalhar com arrays)
+
+Array.Reverse(nome_array) inverter a sequencia
+Array.Sort(nome_array) Ordenar
+Array.BinarySearch(nome_array, objeto) - busca em um array um valor, atraves do algoritmo
+de busca binaria. retorna o indice do valor, ou negativo se não encontrado.
+
+Array como parametros de métodos (params)
+
+aceita como argumento valores separados por virgula,e converte em array.
+Ex:
+
+void calcSoma(params int[]numeros)
+{
+}
+
+posso passar como valor:
+
+calcSoma(1,2,3,4,5,6)
+
+params não pode ter outro parametro no método antes dele. Só ele ou ele por ultimo.
+
+Arrays dimensionais
+
+suporta até 32 dimensoes
+
+arrays bidimensionais são como se fosse tabelas (linhas e colunas)
+int[,] numeross2 = new int[3,3];
+int[,]a = { {0,1}, { 2,3 } };
+
+Array bi dimensional - laço for
+usar o laço for para ler e recuperar os elementos do array bidimensional
+getLength(0)
+
+//for com array
+            int[,] n = new int[2, 3] { { 1, 4, 2 }, { 3, 6, 8 } };
+
+            for (int i = 0; i < n.GetLength(0); i++) // primeira dimensão linhas
+            {
+                for (int j = 0; i < n.GetLength(1); i++) // segunda dimensão colunas
+                {
+                    
+                }
+            }
+
+// com foreach - percorre os elementos de forma crescente de indice começando do zero até lenght -1.
+ foreach (int i in nz)
+            {
+                
+            }
+
+//arraylist
+coleção não generica que armazena elementos de varios tipos
+Essa coleção é uma alternativa a array e também pode ser indexada individualmente e permite
+alocação dinamica de memoria, inclusao, pesquisa e classificacao de elementos de coleção.
+
+namespace System.Collection
+
+ArrayList() - usado para criar uma instancia de classe ArrayList, que está vazia e sem capacidade
+inicial. (capacity e count)
+
+ArrayList(int32) - usado para criar uma instancia de classe ArrayList, que está vazia e TEM capacidade
+inicial especificada
+
+ArrayList(ICollection) - usado para criar uma lista de Array, com elementos de uma coleção especifica
+e tendo a mesma capacidade inicial que é copiado da seleção.
+
+criar NEW, e adicionar com Add
+
+capacity e count (aumentam conforme eu adiciono elementos na lista se for criado um array list sem parametros)
+permite qualquer tipo de dados
+
+inicializadores de objetos (object inicializer) -inicializar em uma unica etapa
+
+Add - permite adicionar um elemento no final do arraylist
+insert(int index, Object value)
+lista.Add("Alex");//adiciona no final
+lista.Insert(2, "Jeniffer"); //adiciona na posicao 2 e realoca os outros elementos
+
+//posso incluir uma coleção no final ou em uma posição do arraylist, realocando os outros elementos
+list.AddRange(array1); //adicionar lista
+list.InsertRange( 2, array1 ); //adicionar lista realocando
+
+
+remover
+Remove (Object value)
+removeAt (index)
+RemoveRange (int index, int count)
+lista.Remove(null);//vai remover a primeira ocorrencia que tiver como null
+lista.Remove("Maria");
+lista.RemoveAt(1); //remove o da posição index 1
+lista.RemoveRange(0, 2); // remove começando da zero e duas posicoes
+
+//verificar se existe na arraylist
+.Contains() retorna true ou false.
+
+//ordenar
+.Sort (usa o Quicksort)
+
+//remover toda a lista (limpar)
+.Clear()
+
+Por ser um tipo Object, o desempenho dele não é bom, pois todos os itens ficam como object,
+e tem que ser convertido pro tipo correto. (boxing e Unboxing) - conversão tipo de valor para objeto,
+e objeto para valor.
+
+Boxing - Conversão do tipo Value Type , para Reference Type
+Unboxing - conversão do tipo Reference Type para Value Type 
+(essas operacoes diminuem o desempenho da lista)
+Parse - converter uma string para um tipo especifico.
+Cast - converter um tipo objeto para um tipo espefifico (que já é compativel)
+
+A recomendação é usar é usar a coleção List<T>
+
+Coleção LIST
+
+A coleção List<T> é uma coleção de objetos fortemente tipados que podem ser acessados usando 
+indice que inicia em zero, e possui métodos para classificar, pesquisar, modificar, e manipular listas.
+É uma versão genérica da ArrayList, sendo equivalente, em caracteristicas, com mais performance.
+
+a classe list<T> podem ser usadas para criar coleções de tipos diferentes, onde T representa o tipo
+do objeto que pode ser inteiro, string, double,etc. e também pode ser um tipo complexo com a classe
+definida pelo usuário.
+
+pode conter elementos do tipo especificado T, faz a verificação do tipo em tempo de compilação
+e não faz boxing e unboxing pois é genérica.
+
+podem ser adicionados usando elementos: add(), addRange(), Insert(), InsertRange(), ou usando
+a sintexe de inicializador de coleção.
+
+Uma List<T> é dinamica e pode ser redimencionada.
+
+Uma List<T> inicia vazia e seus elementos são alocados sob demanda.
+
+São tipo referencia: uma variavel refere-se a um objeto real, que deve ser armazenao na memoria heap
+
+para criar um list<T> temos que especificar o tipo e usar a palavra NEW
+podemos usar add para incluir elementos ou usar inicializadores de coleção para criar uma list<T>
+em uma unica etapa.
+
+tem os mesmos metodos da classe arralist (Add, insert, AddRange, InsertRange, sort, clear, remove)
+da pra percorrer com for e foreach, acesso aos elementos pelo indice.
+uso do contains para saber se está na lista.
+
+List<T>
+System.Collections.Generic
+Coleção de objetos fortemente tipados
+Não realiza operação boxing e unboxing
+Apresenta melhor desempenho
+Apresenta segurança de tipo
+Recomendado para tratar objetos homogeneos e heterogenios
+
+ArrayList
+System.Collection
+Coleção que pode armazenar itens de diversos tipos de dados. Não é fortemente tipada
+Realiza operação boxing e unboxing
+Apresenta um desempenho menor
+Não apresenta segurança de tipo
+Seu uso deve ser evitado.
+
+//metodos Find da List<T>
+Find (primeiro elemento que corresponde a um predicado fornecido),
+FindLast (ultimo elemento), FindIndex, FindLastIndex, FindAll (Coleção de elementos que corresponde a um predicado)
+
+Um predicado é uma função/metodo de argumento unico (condicao) - critério que retorna um valor booleano.
+
+os métodos Find esperam um predicado (metodo ou função que retorna um bool) ex:
+
+List<string> frutas = new() { "Uva", "Banana", "Pera", "Maça", "Abacate", "Laranja", "Morango" };
+
+var fruta = frutas.Find(Procura);
+
+ static bool Procura(string item) // o parametro do metodo procura é cada elemento do list, pra saber algum inicia com L
+{
+   return item.StartsWith("L");
+}
+
+ao inves de passar um método eu também posso passar uma expressão lambda (paradigma funcional)
+
+Expressão lambida - é uma função anonima, ela não tem nome
+os parametros de entrada tem que estar do lado esquerdo do operador  =>
+e definir a expressão ou bloco de instruções do lado direito.
+
+x => x * x;
+
+List<T> x IEnumerable
+
+- IEnumerable é uma interface (descreve um comportamento) - List implementa a interface IEnumerable.
+- IEnumerable é somente leitura
+- List Implementa uma variedade de métodos capazes de acessar e alterar a coleção.
+- IEnumerable possui um método para retornar o próximo item da coleção
+  Não precisa ter toda a lista em memória
+  Não sabe quantos elementos a coleção possui
+  Ao ser iterada em um laço foreach ele vi retornando o proximo item até o fim da coleção
+
+- List possui toda a coleção em memoria e sabe quantos itens possuem a coleção. (A coleção já é numerada)
+
+-IEnumerable da ao compilador a chance de adiar a execução (deferred execution), somente é executada ao ser
+iterada em laço foreach/for, ou ter o valor extraido (sum, count).
+
+Obs: usando IEnumerable, com where, ao atender a condição ele já termina, enquanto o to list ele
+precisa carregar tudo na memória.
+
+Se você precisa realizar uma unica consulta nos dados, sem precisar ficar acessando o resultado varias vezes
+pode usar o IEnumerable. (se precisar modificar os dados é melhor usar o List)
+
+List<T> e principais métodos de consulta LINQ
+
+Any() - Determina se um elemento de uma coleção existe ou atende uma condição - (verificar se tem elementos)
+
+FirstOrDefault() - Retorna o primeiro elemento da coleção que satisfaz uma condição opcional.
+Retorna o valor padrão do tipo caso não encontre nenhum elemento.
+
+Orderby() - Classifica os elementos em ordem crescente com base em uma determinada condição e
+retorna a coleção classificada.
+
+ToList() - Recebe um tipo IEnumerable e converte em um tipo list.
+
+Where() - Retorna todos os elementos da coleção que satisfazem uma determinada condição. (retorna
+um IEnumerable).
+
+
+Indexadores
+
+- Permite que as instancias de um classe ou struct sejam  indexadas como um array. Lembram
+as propridades mas seus assessores get, set, recebem parametros.
+
+permite acessar uma variavel de membro da classe ou struct usando recursos de uma array.
+
+declarando um indexador
+
+public int this[int index]
+{
+    get{}
+    set{}
+}
+
+modificador de acesso + valor de retorno (não pode ser void) +  nome do indexador this + lista de parametros
+de entrada em conchetes []
+
+Se você quer criar um objeto que se comporte como um array/lista, use indexadores!
+
+Classe Random
+
+usada para gerar numeros pseudo aleatorios. O construtor sem parametros da classe Ramdom usa relogio
+do sistema para gerar os valores de semente.
+
+metodos da classe Random
+
+Next() -----------retorna um numero inteiro positivo (dentro do intervalo padrão int)
+Next(int) ---------- retorna um numero inteiro positivo que é menor que o valor maximo definido
+Next(int, int) --------------- numero inteiro dentro de um intervalo
+NextDouble() ------ numero ponto flutuante maior que 0,0 e menor que 1,0
+Next(byte[]) -------------preenche elemento de um array de bytes com numeros aleatorios
+NextInt64(...) Retorna um numero inteiro aleatorio positivo dentro de um intervalo 16 bytes - inicio 0
+
+
+    
+
+
+
+
+
+
+
+
+

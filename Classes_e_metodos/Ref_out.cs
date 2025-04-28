@@ -26,7 +26,7 @@ namespace NetEssencial.Classes_e_metodos
             int novaQtd = 30;
             estoque.AtualizarEstoque(1, ref novaQtd); // Passa por ref a nova quantidade
             
-            gravarLog();//classe parcial
+            Ref_out_metodos.gravarLog();//classe parcial
 
             if (estoque.ObterNomeDoProduto(1, out string nomeProduto)) // Usa out para obter o nome
             {
