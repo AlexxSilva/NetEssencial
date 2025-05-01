@@ -1,4 +1,6 @@
 ﻿
+Basico C#
+
 Tipos de dados (Valor x Referência) - C# Linguagem fortemente tipada
 
 Valor:
@@ -153,13 +155,8 @@ definir no arquivo de projeto : <Nullable>enable</Nullable>
 string? nome = null;
 nome?.ToUpper();
 
-
-=============================================
-
 Estruturas de controle
 IF / IF ELSE / IF ELSE IF / SWITCH / ESTRUTURA DE REPETIÇÃO / WHILE / FOR / DO WHILE / BREAK E CONTINUE
-
-=============================================
 
 Classes e métodos
 
@@ -405,8 +402,9 @@ private -   so pode ser acessado por outro codigo na mesma classe ou struct
 
 internal - pode ser acessado por qualquer codigo no mesmo assembly.
 
-protected - pode ser acessado por qualquer codigo no mesmo assembly ou se a classe for herdada
-em outro assembly
+protected - pode ser acessado própria classe e qualquer classe derivada dela (mesmo em outro assembly/projeto).
+
+protected internal - A própria classe e classes derivadas e qualquer código dentro do mesmo assembly.
 
 file (C#10) - Restringe o escopo e visibilidade de um tipo em nivel superior ao arquivo no que ele foi declarado.
 
@@ -477,8 +475,12 @@ codigos gerados automaticaamente, o codigo pode ser adicionado a classe sem prec
 de origem
 ao usar geradores de codigo fonte  para adicionar uma funcionalidade adicional a classe
 
+====================================================================================
 
-//arrays e coleções
+arrays e coleções
+
+
+
 arrays - numeros fixo de opcoes do mesmo objeto
 coleções - uma maneira flexivel de trabalhar com grupos de objetos
 
@@ -780,7 +782,315 @@ Next(byte[]) -------------preenche elemento de um array de bytes com numeros ale
 NextInt64(...) Retorna um numero inteiro aleatorio positivo dentro de um intervalo 16 bytes - inicio 0
 
 
+====================================
+
+Orientação a Objetos
+
+Paradgma onde tudo é um objeto. Objetos se interagem uns com os outros para realizar tarefas.
+Objeto é uma estratura que incorpora dados e comportamentos para  trabalhar com esses dados.
+
+Um objeto é uma instancia de uma classe.
+Onde classe é o tipo e objeto é uma instancia do tipo.
+
+A classe é a entidade abstrata
+o objeto é a materialização da classe.
+
+pilares
+
+Abstração : reduzir a complexidade e tornar o objeto e a implementação mais eficientes em sistemas
+complexos. se concentra nos aspectos essenciais de um contexto qualquer, ignorando caracteristicas
+menos importações.
+
+Encapsulamento: não permitir o acesso  direto aos dados do objeto. (protegido)
+O codigo do objeto deve controlar o seu estado, sendo alterado pelo seus proprios metodos (segurança da classe)
     
+Herança: Novas classes podem reutilizar, estender e modificar o comportamento definido em outras classes.
+
+A classe cujo os membros são herdados é chamada de classe base, e a classe que herda esses membros é chamada
+de classe derivada.
+
+A Classe base fornece uma funcionalidade comum e as classes derivadas herdam ou subistituem essa funcionalidade.
+
+Polimorfismo: Objetos distintos respondem a mesma mensagem de sua propria maneira.
+Podemos invocar metodos da classe derivada (subclasse) atraves da classe base (superclasse), em tempo de execução e permite
+que classes fornecam diferentes implementacoes de métodos que são chamados com o mesmo nome.
+
+--------------------------------------------------------
+
+herança : apenas herança simples (hierarquia de heranças)
+
+(Reutilização de código, Especialização (permite atributos especificos e compartilhados da classe base,
+permite hierarquia de classes , flexibiel e escalavel.), 
+extensibilidade - permite adicionar novos comportamentos e atributos as classes derivadas,
+sem modificar a classe base)., encapsulamento - proteção do codigo)
+
+possiveis problemas: 
+
+Alto acoplamento de classes (muito cuidado)
+Heranças profundas podem levar a complexidade e tornar o codigo menos legivel.
+reutilização excessiva.
+rigidez, necessidade de mudar ajustar todas as classes derivadas caso tenha uma alteração na classe base.
+
+Não esquecer de usar o encapsulamento das variaveis usando propriedades.
+
+contrutores de classes herdadas.
+
+A classe base e a classe derivada podem ter seus proprios construtores, a classe derivada não herda
+o contrutor da classe base mais pode invoca-lo.
+
+//o contrutor da classe base é executado primeiro, e depois do classe derivada ao instanciar classe derivada.
+
+quando eu quero chamar um contrutor especifico da classe base eu uso "base"
+
+ex:
+classe Pessoa com dois contrutores 
+
+        public Pessoa()
+        {
+            Console.WriteLine($"Contrutor da classe pessoa");
+        }
+        public Pessoa(string Nome)
+        {
+            Console.WriteLine($"Contrutor da classe pessoa com parametros");
+        }
+a classe derivada Aluno, invoca o contrutor que foi especificado como base.
+
+public Alunos() : base() // vai invocar o contrutor sem parametros da Classe Pessoa primeiro
+        {
+            Console.WriteLine($"Contrutor da classe aluno");
+        }
+        public Alunos(string nome) : base(nome) // vai invocar o contrutor com parametro da classe PEssoa primeiro
+        {
+            Console.WriteLine($"Contrutor da classe aluno com parametros");
+        }
+
+Herança com relação a object
+
+Toda classe é derivada de object (Classe base de todas as Classes)
+Os metodos definidos na classe object estão disponiveis para todos os objetos do sistema.
+
+Equals - Suporta comparações entre objetos
+GetHashCode - Gera um numero hash para o objeto
+ToString - Retorna a representação do objeto como string
+GetType - retorna informação sobre o tipo
+
+Se um membro da classe derivada tiver o mesmo nome do membro de uma classe base, o compilador
+notifica que o metodo da classe derivada está ocultando o método da classe base.
+. O modificador new remove o aviso do contrutor, deixando explicito que quer isso mesmo.
+
+(uso do new na classe derivada)
+  public new string Saudacao() => $"Oi seu sou {Nome}";
+
+Uma outra forma também é substituir o membro com  mesmo nome da classe usando virtual e override.
+Com ele é possivel sobrescrever a classe, mudando sua implementação.
+O virtual significa que esse metodo da classe base pode ser sobrescrito nas classes derivadas.
+
+Sealed
+
+Quando aplicado a uma classe, o modificador sealed, impede que outras classes herdem dela.
+
+sealed class MinhaClasseBase // não é possivel herdar essa classe
+{
+
+}
+
+o mesmo para os métodos
+
+sealed protected void carregar1(); // esse não pode
+
+override protected void carregar2(); // esse pode usando o virtual
+
+Herança - relacionamento "É um" entre classe base e uma ou mais classes derivadas.
+
+Classe base
+     ↑
+     | é um
+     |
+Classe derivada
+
+A classe base é uma generalização das suas classes derivadas
+
+herança simples (uma classe base e uma classe derivada)
+
+herança hierarquica - varias classes derivadas para uma classe base.
+
+herança Multinivel - Ocorre quando uma classe derivada de outra classe derivada.
+classe C herda da B que herda da A
+
+herança multipla - uma classe herda de varias classes (no C# as classes não permitem herança multipla,
+somente é possivel assinando contratos - interface.
+)
+
+Downcasting e upcasting
+
+upcasting (implicita)- converte um objeto de um tipo especializado (classe derivada) para uma classe base.
+Ex:
+Classe Conta e classe derivada ContaSalario
+ContaSalario contaSalario = new ContaSalario();
+Conta conta = contaSalario; agora conta é igual conta salario, mas se tiver um metodo especifico
+da classe conta salario, em conta ele não vai poder ser acessado.
+
+Downcasting explicita - operação inversa objeto do tipo geral para um tipo especializado.
+Essa operação pode falhar retornar uma excessão.
+
+ContaSalario conta = (Conta)conta; // aqui volta a ter acesso ao metodo da classe conta salario.
+
+Operadores is e as
+
+O operador as é usado para realizar a conversão entre tipos referência ou tipos anuláveis compativeis
+retorna o objeto quando é compativel com o tipo de dado e retorna null se a conversão não for possivel
+ao invés de gerar uma excessão.
+
+A conversao var x = (string)Funcionario; retorna uma exception system.InvalidcastExeption
+com o as, ele retorna null ao inves de uma exeption
+
+  Funcionario? f2 = p as Funcionario; // com o operador se não converter retorna nulo
+
+            if (f2 != null) {
+            {
+               f2.ListarFuncionario(); // pessoa voltar a ser o funcionario
+            }
+
+operador is é usado para verificar se o tipo de um objeto é compativel com o tipo especificado
+ou não, retorna true se o objeto for do mesmo tipo, caso contrario retorna false.
+Retorna false para objetos nulos.
+
+podemos usar para saber se uma conversão de tipos é bem sucedida
+
+Funcionario f = new Funcionario();
+Pessoa p = f;
+
+if (p is Funcionario) // saber se são compativeis
+{
+ Funcionario? f2 = p as Funcionario; // com o operador se não converter retorna nulo
+ f2?.ListarFuncionario();  poderia usar o if pra saber se é nulo
+}
+
+Abastract
+
+O modificador abastract indica que o recurso que está sendo modificado
+tem uma implementação ausente ou incompleta.
+
+Ele pode ser usado com classes, métodos propriedades, indexadores, eventos
+
+Uma classe abastract, indica que ela está apenas sendo uma classe base de outras classes,
+nao podendo ser instanciada.
+
+Membros marcados com o modificador abstract devem ser implementados por classes não abstratas
+que derivam de uma classe abstrata.
+
+Um metodo abstrado nao possui implementação na classe abstrata, somente na classe derivada
+Um método abstrato possui somente a definição de sua assinatura
+um método abastrato é implicitamente um metodo virtual
+é um erro usar modificadores virtual e static em métodos abstratos
+propriedades abstratas se comportam como métodos abstratos.
+
+Interface (contrato entre si e com qualquer outra classe que implementar)
+
+antes do C# 8.0 - até 2019 era como uma classe base abstrata que continha apenas membros
+abstratos e qualquer classe ou struct que implementa-se uma interface deveria implementar
+todos os seus membros.
+
+C# 8.0- pode definir implementações padrão e não precisa implementar todos os membros que
+tenham uma implamentação padrão.
+
+C# 11 - Os membros que nãõ são campos podem ser static abstract
+
+Pode conter assinaturas de métodos, e também podem conter métodos publicos
+e estaticos que contenham implementação.
+
+podemos alterar os modificadores da classe.
+
+não tem: campos de instancia, construtores de instancia, ou finalizadores.
+
+para implementar um membro da interface, na implementação o membro deve ser publico
+nao estatico e ter o nome e assinatura do membro da interface.
+
+não podem ser instanciadas diretamente
+pode herdar de uma ou mais interfaces, tendo que implementar todos os membros abstratos,
+herdando todos os membros da interface base.
+
+Relacionamento entre classes (Composição e Agregação)
+
+Relacionamento "É um" - Representado pela herança
+Relacionamento "Tem Um" - Representado pela composição e pela agregação.
+
+COmposição e agregação permitem que uma classe contenha um ou mais objetos de outras
+classes para formar um grande objeto realizando funcionalidades especificas.
+O container é a superclasse ou classe pai, e as classes contigas são sub classes, ou classes filhas,
+possuindo um relacionamento "Tem um";
+
+Composicao: Um objeto de uma classe é composto por um ou mais objetos de outras classes.
+O relacionamento é formado quando uma classe tem uma referencia a outra classe como 
+propriedade ou instancia.
+
+diagrama de classes (composição)
+
+Classe Pai               classe filha
+                tem um
+Classe A   ◆------------- ClasseB
+
+Relação Todo(pai) - parte(filhas)
+O todo(pai) é responsavel por criar e destruir as suas partes (filhas)
+A parte(filha) não existe sem o todo (pai)
+O mesmo objeto parte não pode se associar a mais de um objeto todo
+
+Ex:
+
+             "tem um"
+Produto   ◆------------- Categoria
+(Todo)                  (filha)
+
+Pedido   ◆------------- ItensPedido
+(Todo)                  (filha)
+
+
+Assim como a herança, a composição permite reutilização de código.
+Com a composição nós podemos reutilizar codigo no nosso projeto sem duplicar.
+
+Agregação
+
+Tipo especial de composição onde objetos de uma classe pode conter um ou mais 
+objetos de outra classe.
+
+                tem um
+Classe A  ◇------------- ClasseB (losangulo vazio é agregação)
+
+Na agregação a parte pode existir sem o todo
+
+A agregação é uma associação mais fraca, enquanto a composição é uma associação mais forte.
+
+
+nameof() - produz o nome de uma variavel,  tipo ou membro como a constante da cadeia de caracteres, em
+outras palavras exibe o nome da variavel.
+
+
+Polimorfismo
+
+Polimorfismo é o principio, pelo qual duas ou mais classes derivadas de uma mesma superclasse
+podem invocar métodos que tem a mesma identificação (assinatura), mas comportamentos
+distintos especializados para cada classe derivada, usando para tanto uma referência a um objeto
+do tipo da superclasse.
+
+- invocar metodos da classe derivada atraves da classe base,
+diferentes implementações de metodos que são chamados com o mesmo nome.
+
+Tipos de polimorfismo
+
+Em tempo de compliação (Overloading ou sobrecarga)
+Sobrecarga de métodos e operadores, chamado de ligação precoce(erly binding).
+
+
+Em tempo de execução (Overrinding ou Sobrescrita)
+
+Pode ser feito usando herança e métodos virtuais. (override - late binding ligação tardia)
+Invocar métodos da classe derivada através de classe base em tempo de execução.
+
+ ====================================================
+
+
+
+
 
 
 
