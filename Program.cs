@@ -15,7 +15,7 @@ namespace NetEssencial
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Orientacao_Objetos.OrientacaoObjetos());
+            Application.Run(new Generics.Generics1());
         }
     }
 }

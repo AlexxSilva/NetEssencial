@@ -9,6 +9,15 @@ Variaveis do tipo valor não podem conter o valor null
 Os dados são armazenados na stack (Numericos: int, float, decimal)
 								  ( Não numericos: bool, char, enum, datetime (struct))
 
+estrutura de herança
+
+System.Int32
+   ↓
+System.ValueType
+   ↓
+System.Object
+
+
 Referência: 
 
 Os dados fica armazenado na heap e cada variavel contem uma referencia ao local
@@ -710,6 +719,9 @@ e definir a expressão ou bloco de instruções do lado direito.
 
 x => x * x;
 
+var fruta2 = frutas.Find(f => f.Contains('n'));
+
+
 List<T> x IEnumerable
 
 - IEnumerable é uma interface (descreve um comportamento) - List implementa a interface IEnumerable.
@@ -1089,14 +1101,254 @@ Invocar métodos da classe derivada através de classe base em tempo de execuç�
  ====================================================
 
 
+ 
+ Generics
+
+Não ser especifico para um determinado tipo de dados
+permite definir classes, interfaces, campos, métodos, propriedades, eventos,
+delegates e operadores genéricos usando o parametro tipo e sem tipo de dados especifico.
+
+sintaxe
+
+<T>
+
+definir restrições para restringir o tipo com where
+
+NomeTipo <T> where T: <restrição>
+
+public class ClassGeneric<T> where T: struct ---- determina que tem q ser um tipo valor
+public class ClassGeneric<T> where T: class, new() --- determina que tem ser um tipo de referencia com contrutor publico sem parametro
+public class ClassGeneric<T> where T: class --- determina que tem ser um tipo de referencia 
+
+Posso restringir com o nome de uma classe base, ou interface (obriga a implementar a interface)
+
+beneficios: segurança de tipo, reutilizacao de codigo, desempenho (evita boxing e uboxing)
+
+Generics é usado para definir as coleções genericas de System.Collection.Generic
+Collection<T>, List<T>, Dictionary <TKey, TValue>
+Queue<T>
+Stack<T>
+
+GetType() - retorna o tipo de dado no generics
+
+o método com o <T>
+public void comparar<T> (T1, T2);
+
+Se estiver definido na classe, não precisa dizer que o método é generico 
+
+ public class Teste1<T1, T2> where T1 : struct where T2 : struct
+    {
+        public bool Comparar(T1 p1, T2 p2)
+        {
+        }
+    }
+
+GetHashCode e Equals
+
+são métodos da classe object que servem para comparação de objetos
+
+GetHashCode - retorna um valor inteiro (codigo hash) - mais rapido que o equals
+Equals - retorna um boolean (ao comparar dois objetos
+mesmo que atribuido os mesmos valores se comparar retorna false, pois são
+referencias a objetos diferentes)
+
+Nos tipos definidos pelo usuário é necessario sobrescrever esses dois metodos
+para garantir a igualdade entre dois objetos do mesmo tipo
+
+Obs: GetHashCode pode gerar numeros iguais para objetos diferentes.
+
+Coleções Genericas  x Não Genéricas
+
+Não Genericas
+ArrayList, HashTable, SortedList, Stack, Queue
 
 
+Principais Caracteristicas
+
+//Armazenam dados do tipo object, realizam boxing e unboxing, são suscetiveis a erros
+em tempo de compilação por incompatibilidade de tipos.
+
+Genericas
+
+Dictionary, SortedDictionary, SortedList, LinkedList, hashSet, sortedSet,
+Stack, Queue, List
+
+são fortemente tipas, elementos de um unico tipo e não realizam boxing e unboxing
+
+favorecem a reutilização de codigo
+
+ArrayList .... List<T>
+hashtable .... Dictionary<Tkey, Tvalue>
+Queue ...Queue<T>
+SortedList.... SortedList<T>
+stack .... stack<T>
+
+Dictionary
+
+coleção do tipo chave valor (implementa a interface IDictionary) com duas coleções no seu interior
+uma pra guardar a chave e a outra o valor  (chave exclusiva)
+
+IEqualityComparer<T> usa um contrutor que aceita comparação (valor padrão usado caso não declarado)
+
+Dictionary<TKey, TValue>
+
+Dictionary<string, int> dic1 = new Dictionary<string, int>();
+Dictionary<string, int> dic1 = new Dictionary<string, int>(5);
+
+(a chave não pode ser repitida e nem nula)
+
+propriedades
+
+Count - Numero de elementos
+IsReadOnly - retorna um bolean se o Dictionary é somente leitura
+Item - obtem ou define o elemento com a chave
+Keys - retorna a coleção de chaves
+Values -retorna a coleção de valores
+Comparer - Obtem o IEqualityComparer<T> que é usada para determinar a igualdade
+de chaves para o dicionario
+
+metodos
+Add (Tkey, Tvalue) -adiciona chave e valor (erro ArgumentException)
+TryAdd  (Tkey, Tvalue) - tenta adicionar, retorna true se deu certo
+Clear() - Remove as chaves e valores
+ContainsKey(Tkey) - determina se contem uma chave
+ContainsValue(Tvalue) - determina se contem um valor
+Remove(Tkey) remove os valores de uma chave especificada
+TryGetValue (Tkey, Tvalue) - Obtem o valor associado a uma chave especifica, se não existir
+retorna o valor padrão para o tipo de parametro value.
+ if (dic2.TryGetValue(4, out int valor))
+            {
+                MessageBox.Show($"Valor {valor}");
+            }
+exibindo pela chave {dic2[7]} (7 é a chave)
+
+percorrendo com foreach
+ foreach (var item in dic2)
+            {
+                MessageBox.Show($"Valor {item.Key} - {item.Value}");
+            }
+
+Sorted Dictionary
+
+SortedDictionary<TKey, TValue> (Colleção ordenada) (usa arvore binaria para manter os itens em ordem
+pela chave) usa a interface IComparable <Tkey> de modo que as chaves possam ser corretamente ordenadas
+
+tem os mesmos metodos da classe Dictionary
+
+Coleções Set
+
+Coleção que contem apenas itens distintos é conhecida pelo conjunto de termo set.
+
+HashSet<T> contem uma lista não ordenada de itens distintos.
+SortedSet<T> contem uma lista ordenada de itens distintos
 
 
+HashSet<T> - Coleção generica e não ordenada que implementa uma interface ISet<T> e representa um conjunto
+de itens exclusivos (não permite a inclusão de elementos duplicados)
+usa uma função hash para determinar a posicao de um item na coleção, o que permite acesso rapido
+aos elementos.
+
+a ordem pode mudar quando adicionamos elementos ou removemos
+
+A interface oferece metodos para criar  uma união de multiplos conjuntos , para criar intersecção de conjuntos,
+ou para fornecer informações se um conjunto for um superconjunto ou subconjunto de outro.
+
+var numeros = HashSet<int> {1,2,3,4};
+var frutas = new HashSet<string> {"uva", "banana", "pera"}
 
 
+var pares = new HashSet<int>();
+for (int i=0; i<6; i++)
+{
+    pares.Add(i * 2);
+}
+
+posso também usar o construtir que eu passo um IEnumerable
+
+var numeros = new List<int>(){1,2,3,4,5} // list que herda de IEnumerable
+ var conjunto = new HashSet<int>(nums);  
+
+ qualquer coleção que implementa a interface IEnumerable, pode ser usada como parametro no HashSet.
+
+ propriedades
+
+Count - Numero de elementos 
+Comparer - Obtem o IEqualityComparer<T> que é usada para determinar a igualdade no hashset
 
 
+métodos
+
+padrões
+
+Add
+Contains
+Remove
+
+ExceptWith(IEnumerable<T>) - Remove todos os elementos na coleção especificada
+IntersectWith(IEnumerable<T>) - Modifica o Hashset atual para q contenha apenas elementos presentes no objeto e na
+coleção especificada.
+IsSubsetOf(IEnumerable<T>) - Determina se uma coleção hashset é subconjuto de outra.
+Overlaps(IEnumerable<T>) - Determina se um objeto atual e uma coleção compartilham elementos comuns.
+RemoveWhere(Predicate<T>) - Remove todos os elementos que correspondem as condições definidas pelo predicado
+especificado de uma coleção de hashset
+SetEquals(IEnumerable<T>) Determina se um objeto e coleção contem os mesmos elementos
+SymmetricExepctionWith(IEnumerable<T>) mdifica o Hashset atual para q ele contenha apenas elementos que estão
+no HashSet atual, ou na coleção especificada, mas não em ambos.
+UnionWith(IEnumerable<T>) - Modifica o hashset atual para que ele contenha todos os elementos que estão presentes
+no hashset atual e em uma coleção especifica.
 
 
+SortedSet<T> - mesmos métodos só que permite ordenar.
+
+Stack<T> - pilha , O ultimo a entrar é o primeiro a sair.
+
+push, pop , peek
+
+Stack<T>, stack<T>(IEnumerable), Stack(int Capacity)
+
+Queue<T> 
+
+Fila,o primeiro que entra é o primeiro q sai.
+
+Enqueue (adicionar), Dequeue (remover), peek
+
+Queue<T>, Queue<T>(IEnumerable), Queue<T>()
+
+
+Proprieadades: Count
+métodos: 
+Enqueue (T) - inclui no final da fila
+Dequeue Retorna um item do inicio da fila e remove da fila.
+Peek () - Retorna o item do inicio da fila sem removê-lo
+Contains - verifica se um item existe na fila
+clear() - Remove elementos da fila.
+
+Coleções somente leitura
+
+Permite que os dados sejam acessados mas não modificados.
+System.Collections.ObjectModel.
+
+ReadOnlyCollection<T> - criado a partir de uma coleção mutavel.
+ReadOnlyDictionary<TKey, TValue> criado a partir de um dicionario mutavel.
+
+contrutor  
+public ReadOnlyCollection(ILIST<T>)
+
+var planetas = new List<string>() {"Mercurio", "Venus", "Terra", "Marte"}
+var listaPlanetas = new ReadOnlyCollection<string>(planetas)
+ou
+var notalista = planetas.AsReadOnly();
+
+propriedades
+
+Count - numero de elementos
+Item - obtem o elemento especificado
+Items - retorna um IList 
+
+métodos (não tem os métodos add, remove ou clear)
+
+Contains(T item)
+CopyTo(T[] array, int arrayIndex)
+GetEnumerator()
+IndexOf(T item)
 

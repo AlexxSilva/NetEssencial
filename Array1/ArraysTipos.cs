@@ -267,11 +267,13 @@ namespace NetEssencial.Array1
                 numerosSorteados[i] = numeroAleatorio;
             }
 
-           Array.Sort(numerosSorteados);
+            Array.Sort(numerosSorteados);
            
             string valor = string.Join(" ", numerosSorteados);
         
-        
+            
+
+
         }
 
         static bool Procura(string item)
