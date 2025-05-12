@@ -1,5 +1,6 @@
 
 
+using NetEssencial.Delegates;
 using NetEssencial.NullableTypes1;
 
 namespace NetEssencial
@@ -15,7 +16,7 @@ namespace NetEssencial
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Generics.Generics1());
+            Application.Run(new Delegates.Delegates1());
         }
     }
 }

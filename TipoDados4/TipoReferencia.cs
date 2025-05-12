@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetEssencial.MetodoExtensao;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -42,6 +43,9 @@ namespace NetEssencial.TipoDados4
                         (letra).ToString() + "\n"
                         , "msg"
                         , MessageBoxButtons.OK);
+
+            string texto = "Usando métodos de extensão";
+            string textoInvertido = texto.InvertString();
         }
     }
 }

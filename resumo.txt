@@ -1352,3 +1352,319 @@ CopyTo(T[] array, int arrayIndex)
 GetEnumerator()
 IndexOf(T item)
 
+===============================================================
+
+Single Cast Delegates 
+
+Um tipo que referencia a métodos com uma lista de parametros e um tipo de retorno
+especifico. ( é um tipo de dado)
+
+ao intanciar um delegate, podemos associar a sua instancia a qualquer método com uma assinatura
+compativel e tipo de retorno, e podemos invocar o método por meio da instancia delegada.
+
+Podem ser usados para implementar eventos, metodos de retorno de chamada, e para passar metodos
+como argumentos para outros métodos.
+
+flexibiidade para implmentar qualquer funcionalidade em tempo de execução.
+
+Tipo de dado de referencia, que define a assinatura de um método (podemos definir
+variaveis de um tipo delegate que podem se refirir a qualquer método que tiverem a 
+mesma assinatura do delegate.)
+
+etapas:
+
+1 - declarar um delegate
+2 - definir um método de destino (Pode já existir, ou eu posso cria-lo)
+3 - Invocar ou chamar um delegate
+
+public delegate void MeuDelegate(string mensagem); (posso associar com um método que também retorna void e recebe como parametro uma string)
+
+definicao do método
+MeuDelegate del1  new MeuDelegate(MeuMetodo);
+
+MeuDelegate del1 = MeuMetodo; ou MeuDelegate del = (msg) => Console.WriteLine(msg);
+
+invocar
+del1.Invoke("mensagem"); ou del1("mensagem")
+
+MultCast Delegate (é possivel invocar mais de 1 método) - varias ações precisam ser
+executadas para um evento ocorrer.
+
+
+1 - declarar um delegate
+2-   criar uma instancia do delegate e registrar os metodos desejados usando +=
+pode usar -= para excluir da lista de metodos a serem chamados. (definir métodos de destino)
+3 - Invocar ou chamar um delegate
+
+onde são usados:
+
+Eventos
+Callbacks
+Encadeamento de métodos
+Aplicações assincronas
+
+
+Funções anonimas
+
+Uma função anonima é uma função que não possui nome e que pode ser definida usando a palavra
+chave delegate e pode ser atribuida a uma variave do tipo delegate
+
+Podemos usar  para inicializar um delegate nomeado ou passar um metodo anonimo em vez
+de um tipo delegate nomeado como parametro no metodo
+
+Tipos de funções anonimas:
+
+Métodos anonimos (Anonymous Method)
+
+
+ List<string> nomes = new List<string>();
+            nomes.Add("Alex");
+            nomes.Add("Edinaldo");
+            nomes.Add("Clayton");
+            nomes.Add("Filipe");
+
+            string result = nomes.Find(delegate(string nome)
+            {
+                return nome.Equals("Alex");
+            });
+
+
+Expressoes lambdas (Lambda Expressions.)
+
+É uma função anonima que pode ser usada para criar delegates ou expressoes de arvore de expressão.
+(é uma maneira curta de representar um método anonimo usando uma sintaxe especial)
+
+Ser para poder criar métodos não nomeados
+
+    se houver           (ir para)
+(parametros de entrada)    =>        {Expressão ou bloco de instrução}
+
+x => x * x 
+
+x recebe x * x
+
+nomes.Find((string nome) => nome.Equals("Alex"));
+
+Delegates pré definidos : Predicate, Action e Func
+
+Podemos usar para passar referencia a métodos como argumentos a outros métodos.
+
+
+Predicate<T> - Representa um método que recebe um unico argumento do tipo <T> e retorna um valor
+booleando. Pode ser usado para testar se um objeto satisfaz uma condição especifica.
+
+Action<T> Representa um método que não retorna valor, mas pode receber até 16 parametros de entrada.
+É util para representar um método que executa uma ação, sem retornar nenhum valor.
+
+Func<T, TResult>  Recebe de um até 16 argumentos do tipo T,  e retorna um valor do tipo T Result.
+É util para representar um método que executa uma operação e retorna um resultado.
+
+Delegate Predicate
+
+Representa um método que define um conjunto de critérios e determina se o objeto especificado
+atende os critérios.
+
+public delegate bool Predicate<in T> (T obj)
+
+O objetivo é testar se uma condição especifica realiza operações baseadas em critério
+
+
+Delegate Action (usado em callbacks)
+
+É um delegate que representa um método que não retorna nenhum valor, pode receber de
+um a 16 argumentos.
+
+public delegate void Action<in T> (T obj)
+
+
+Delegate Func 
+
+Delegate que encapsula um método que pode receber 16 argumentos e tem um tipo de retorno
+
+public delegate TResult Func<in T1, int T2 .... out TResult> (T1 arg1, T2 arg2)
+
+
+var listaDePessoas = Pessoa.GetPessoas();
+            
+Console.WriteLine("1- imprime o nome/idade de cada pessoa usando um delegate Action<Pessoa>");
+            
+Action<Pessoa> imprimeNome =  p => Console.WriteLine(p.Nome);
+listaDePessoas.ForEach(imprimeNome);
+
+Console.WriteLine("2- Filtra pessoas maiores de 18 anos usando um delegate Pedicate<Pessoa>");
+
+Predicate<Pessoa> fitrarIdadeMaiorQue18 = p => p.Idade >= 18;
+var pessoasMaiores18Anos = listaDePessoas.FindAll(fitrarIdadeMaiorQue18);
+
+Console.WriteLine("3- Obtém nome/idade de pessoa mais velha utilizando um delegate Func<Pessoa>");
+
+Func<Pessoa, int> obterIdade = p => p.Idade;
+var pessoaMaisVelha = listaDePessoas.MaxBy(obterIdade);// C#10
+//int idadeMaxima = listaDePessoas.Max(obterIdade);
+//var pessoaMaisVelha = listaDePessoas?.Find(p => p.Idade == idadeMaxima);
+
+Console.WriteLine($"A pessoa mais velha é { pessoaMaisVelha.Nome } de idade {pessoaMaisVelha.Idade }");
+
+
+Eventos
+
+Mecanismos que permitem que uma classe ou objeto notifique outras classes ou objetos quando alguma ação ocorre.
+A classe que envia (ou aciona) o evento é chamada de publisher ou publicador e as classes que
+recebem os eventos são chamadas de Subscribers ou Assinantes
+
+- Pode haver varios assinantes de um unico evento
+- Um publicador, quase sempre gera um evento quando alguma ação ocorre.
+- Os assinantes que estão interessados em receber uma notificação quando uma ação ocorrer,
+devem  se registrar em um evento e trata-lo.
+- Os métodos das classes que manipulam o evento (Subscribers) geralmente são
+chamado manipuladores de eventos.
+
+Evento - declaração de um delegate que é um tipo de referencia que permite que um método
+sejá passado com argumento para outro.
+
+o delegate é definido pela assinatura do método quando disparado
+
+No c# um evento é um delegate encapsulado e depende do delegate.
+
+O delegate define a assinatura para o método manipulador de eventos de classe assinante.
+
+propriedades
+
+Publisher (publicador)
+Subscribers (assinante)
+
+Um evento pode ter varios assinantes. Um assinante pode manipular varios eventos de varios
+publicadores.
+
+Eventos sem assinantes nunca serão publicados
+
+Normalmente os eventos usados para sinalizar ações do usuário, como cliques de botão ou seleções de menu em interfaces
+grafica do usuário.
+
+
+criando um evento
+
+Definir um delegate com a assinatura do metodo que sera chamado quando o evento for publicado
+Declarar um evento na classe que irá disparar o evento, usando o delegate definido anteriormente
+Disparar o evento quando a ação desejada ocorre na classe
+Inscrever assinantes interessados nos eventos desejados
+
+delegates pré definidos (EventHandler e EventHandler<TEventArgs) - delegates de eventos
+
+Manipular eventos que não possuem dados ou que possuem dados
+
+public delegate void EventHandler(object? sender, EventArgs e);
+
+object? sender - contem uma referencia ao objeto que gerou o evento. (fonte do evento)
+EventArgs - um objeto que não contém nenhum dado de um evento.
+
+public delegate void EventHandler<TEventArgs>(object? sender, TEventArgs e);
+
+TEventArgs: O tipo de dados do evento gerado pelo evento.
+object? sender - contem uma referencia ao objeto que gerou o evento. (fonte do evento)
+TEventArgs - um objeto que contém  dado de um evento.
+
+
+Métodos de extensão
+
+Permite estender a funcionalidade de um tipo existente sem criar um novo tipo derivado,
+recompilar ou modificar o tipo atual.
+
+tipo especial de método estatico chamado como se fosse um método de instancia no
+tipo estendido.
+
+uteis para extender funcionalidades existentes.
+
+
+-criar uma classe estatica
+- implementar um metodo de extensao como estatico
+-o primeiro parametro deve especificar o tipo que o parametro vai operar, precedido pelo modificador this.
+- no codigo da chamada adicione a diretiva using para especificar o namespace que contem a classe do 
+método.
+
+
+Linq
+
+É um conjunto de técnologias baseadas na integração de recursos diretamente na linguagem c#
+
+sintaxe baseada no padrão sql
+
+System.Linq
+
+Recursos -----------
+Expressões de consulta = semelhante a consultas de colleções IEnumerable
+Métodos de extenção = conjunto de métodos de extensão que fornecem a funcionalidade,
+ de consulta de qualquer tipo que implementa IEnumerable<T>
+
+ expressões lambdas = para fazer chamadas de método diretas aos operadores de consulta padrão.
+
+ tipos anonimos = Permite criar objetos que contem um conjunto de propriedades sem a necessidade
+ de definir uma classe explicitamente.
+
+ Variaveis tipadas implicitamente com var
+
+ Inicializadores de objeto da coleção = permite inicializar objetos sem chamar explicitamente
+ um construtor para o objeto. São usados em expressões de consulta quando projetam os dados de origem
+ em um novo tipo de dados.
+
+Consultas integradas a lingaguem - paradigma declarativo, semelhante ao SQL.
+
+Intellisense: Fornece sugestões de codigo enquanto o desenvolvedor está digitando o que torna
+o processo de escrita do código, mais eficiente.
+
+Tipagem forte: os dados verificados em tempo de compilação.
+
+Suporte a varios tipos de dados
+
+Operadores de consulta padrão (where select, group by, Orderby e join)
+
+suporte a banco de dados
+
+linq (Collection, ado.net (linq to dataset), entityframework, xml, sql, outras fontes de dados - IQueryable)
+
+retornam os dados como objetos.
+
+Permite reutilizacao da consulta.
+
+Consultas LINQ usam métodos de extensão para classes que implementam interface IEnumerable ou 
+IQueryable (permite usar fontes externas como um banco de dados ou serviço da internet)
+Linq to Objects
+Linq to Entities
+
+Podemos chamar qualquer método linq em qualquer objeto
+
+sintaxes
+
+(Query Sintax) - select, where, from , group by, orderby
+
+from object in datasource 
+where condition
+select object
+
+var resultado = from m in nomes
+where m.contains('o')
+select m;
+
+
+(Method Sintax) - métodos de extensão da interface IEnumerable e IQuerable
+
+var resultado  = nomes.where(x => x.contains('0'))
+
+Os dois casos tem execução adiada, só executado quando iterado. Defferred Execution
+
+para converter para um List<T>, usa-se o método toList();
+
+FiltrarDados
+
+Where (use em conjunto Orderby, ThenBy - ordenação, Sum,Average, Count - calculos, Select)
+
+First (primeiro elemento)
+FirstOrDefault (primeiro elemento, não lança uma exceção)
+Last - (ultimo elemento)
+LastOrDefault (ultimo elemento, não lança uma exceção)
+SingleOrDefault - (Retorna o unico elemento da sequencia q atende uma condicao, lanca excessão se
+tiver mais de um elemento q atende a condição).
+
+Group by <TKey, T>
+
+
