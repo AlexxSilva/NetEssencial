@@ -1668,3 +1668,201 @@ tiver mais de um elemento q atende a condição).
 Group by <TKey, T>
 
 
+Programação assincrona e programação paralela
+
+Técnicas para melhorar o desempenho de aplicações e uso de recursos do sistema.
+Oferecem recursos poderosos para lidar com tarefas que exigem muito processamento.
+
+assincrona
+
+permite que um aplicativo execute varias tarefas ao mesmo tempo
+sem bloquear a thread principal. (linha de execução) 
+(executa em quanto outras tarefas estão em andamento)
+
+uso das palavras chaves async/await a biblioteca de tarefas TPL 
+(TASK PARALLEL LIBRARY) do net.
+
+Programação paralela (biblioteca Parallel)
+
+Programação paralela, por outro lado, é um modelo que permite que o aplicativo
+execute varias tarefas ao mesmo tempo, aproveitando os recursos do processador.
+Isso é feito usando a biblioteca Parallel do .net que fornece vários
+métodos para executar as operações em paralelo. (usar em varias theads)
+
+Programação assincrona
+
+mult tarefas simultaneas
+inicia uma tarefa e pode executar outras enquanto a primeira está em andamento
+async e await
+
+Programação Assincrona é implementada usado a classe Task de
+System.Threading.Tasks.
+
+a classe task é uma representação assincrona de uma operação em execução e é usada
+para executar tarefas assincronas
+
+O nucleo da programação assincrona são os objetos task e task<T>
+que modelam operacoes assincronas
+
+Esses objetos oferecem suporte a async e await
+
+await - aguarda uma operacao que retorna uma task ou task<T>
+async é usada para sinalizar que o método é assincrono.
+
+Retornos de métodos assincronos:
+
+Task ou Task<T>
+ValueTask ou ValueTask<T>
+void (apenas em manipuladores de eventos)
+
+Quando chama void o seu método deve estar preparado para continuar sem
+esperar o método assincrono pois ele não tem retorno
+
+ValueTask e ValueTask<T> quando usar
+Quando o resultado da operacao executada pelo método asyncrono ja estiver
+disponivel no momento da espera
+Quanto temos cenarios assincronos no qual o armazenamento  em buffer está presente
+Quando o resultado da operação for concluida de forma sincrona.
+
+valueTask naõ tem alocação de memoria (struct)
+
+Task.Run (executar uma ação de forma assincrona em uma nova Thread) executa
+no Thread pool
+
+.Result (usado para obter o resultado da tarefa quando ela é concluida.)
+O result bloquea a Thread principal até que a tarefa seja concluida.
+- result resutado imediado
+
+Cancelamento de tarefas
+
+token de cancelamento
+
+CancellationTokenSource - objeto que cria um token de cancelamento também
+emite o pedido de cancelamento para todas as copias desse token.
+
+CancellationToken - Propaga a notificação de que as operações devem
+ser canceladas. Os ouvintes monitoram o valor da propriedade IscancellationRequested
+do token por sondagem, retorno de chamada ou identificador de espera.
+
+OperationCanceledExeption - É a exceção que é lançada em uma thread após o
+cancelamento de uma operação que a tarefa na thread estava executando.
+
+padrão de implementação de cancelamento:
+
+1) instancie um objeto CancellationTokenSource que gerencia e envia notificação
+de cancelamento aos tokens de cancelamento individuais
+
+2) passar o tocken para cada tarefa (CancellationTokenSource.Token)
+
+3)Fornece um mecanismo para cada tarefa ou encadeamento para responder ao cancelamento
+
+4)Chame o método CancellationTokenSource.Cancel para notificar o cancelamento
+
+Tratamento de exceções da programação assincrona
+
+Ele não é executado sequencialmente
+
+Na programação Sincrona o codigo lança uma exceção em um método
+se propaga para cima na pilha de chamadas até que a pilha de chamadas
+escontre um bloco catch que possa tratar a excecao.
+
+Na assincrona como não é executado sequencialmente, 
+o tratamento é diferente.
+
+TesteAsync t = new();
+
+            try
+            {
+                t.ChamadaTarefaAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Metodo não será executado");
+                MessageBox.Show(ex.Message);
+            }
+
+esse catch nunca é executado, pois ocorre uma exceção
+no método chamada tarefaAsync que é assincrono está rodando
+em outra thread, ou seja ele não retorna para esse metodo o erro.
+
+Quando o código é executado de forma assincrona, lança uma exceção,
+essa exceção é armazenada no objeto Task.
+
+Quando exceções lançadas em métodos assincronos com tipo de retorno
+Task ou Task<T>, são encapsuladas em instancia da classe,
+AggregateException, e associadas a intancia Task.
+
+Se mais de uma Exceção for lançada, todas seram armazenadas na 
+coleção AggregateException.InnerExceptions
+
+com Void não podem ser capituradas fora do método, não possuem objetos
+task.
+
+precisa usar o await para capturar a exceção.
+
+Multiplas Exceções
+
+recomendações sobre a programação assincrona
+
+Quando excecutamos async e await o codigo é executado de forma não
+sequencial; 
+
+O compilador converte o método assincrono em uma Maquina de estados
+(locação implicita de memoria)
+
+Quando a operação bloqueante é encontrada, a maquina de estados
+é interrompida e a excecução retorna a função chamadora, permitindo que
+outros códigos sejam executados enquanto a operação assincrona
+aguarda a conclusão.
+
+quando a palavra chave await é aplicada, ela suspende o método
+da chamada e transfere o controle de volta ao seu chamador até
+que a tarefa em espera seja concluida.
+
+Usar para operações de longa duranção (Acesso a arquivos,
+banco de dados, requisicoes remotas)
+
+* Utilize async e await para realizar operações assincronas
+(Task, Task<T>, ValueTask, ValueTask<T>)
+
+* Evitar usar metodos async que retornam void
+
+* Async/await é encadeado, ou seja você não pode chamar
+um método assincrono dentro e um método sincrono.(pode
+causar deadlock)
+
+* Utilizar o sufixo Async nos nomes dos métodos assincronos
+
+* Para Cancelar um método assincrono use o CancellationToken
+
+*não retorne null de um método que retorna uma Task
+(pode causar um nullReferenceException)
+
+evite retornar void pois não trata exceção
+
+Utilize metodo whenAll para aguardar mais de uma tarefa
+
+streams assincronos para metodos que retornam um lista assincrona
+static private async IAsyncEnumerable<string> GeraMeses()
+        {
+            yield return "Janeiro";
+            yield return "Fevereiro";
+            yield return "Março";
+            await Task.Delay(2000);
+            yield return "Abril";
+            yield return "Maio";
+        }
+
+Classe Semaphore
+É usada para limitar o numero de threads que podem ter acesso
+a um recurso compartilhado de forma simultanea.
+
+Usada quando temos um numero limitado de recursos e queremos
+limitar o numero de threads que podem usar o recurso de forma
+Simultanêa com a segurança da Thread
+
+SemaphoreSlim - SemaphoreSlim é uma classe que permite 
+limitar o número de threads que podem acessar uma 
+determinada seção de código ao mesmo tempo. Diferente de 
+Semaphore, ela é otimizada para uso assíncrono (await), o
+que é ideal para aplicações ASP.NET Core.
